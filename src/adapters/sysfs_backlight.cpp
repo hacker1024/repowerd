@@ -65,28 +65,30 @@ struct CompareBacklightPriority
 
 repowerd::Path determine_sysfs_backlight_dir(repowerd::Filesystem& filesystem)
 {
-    repowerd::Path const sys_backlight_root{"/sys/class/backlight"};
-    repowerd::Path const sys_led_backlight{"/sys/class/leds/lcd-backlight"};
+    return repowerd::Path("/sys/class/backlight/panel0-backlight");
 
-    std::vector<repowerd::Path> backlights;
+//     repowerd::Path const sys_backlight_root{"/sys/class/backlight"};
+//     repowerd::Path const sys_led_backlight{"/sys/class/leds/lcd-backlight"};
 
-    for (auto const& dir : filesystem.subdirs(sys_backlight_root))
-    {
-        if (filesystem.is_regular_file(repowerd::Path{dir}/"brightness"))
-            backlights.push_back(dir);
-    }
+//     std::vector<repowerd::Path> backlights;
 
-    if (!backlights.empty())
-    {
-        std::stable_sort(backlights.begin(), backlights.end(),
-                         CompareBacklightPriority(filesystem));
-        return backlights.front();
-    }
+//     for (auto const& dir : filesystem.subdirs(sys_backlight_root))
+//     {
+//         if (filesystem.is_regular_file(repowerd::Path{dir}/"brightness"))
+//             backlights.push_back(dir);
+//     }
 
-    if (filesystem.is_regular_file(sys_led_backlight/"brightness"))
-        return sys_led_backlight;
+//     if (!backlights.empty())
+//     {
+//         std::stable_sort(backlights.begin(), backlights.end(),
+//                          CompareBacklightPriority(filesystem));
+//         return backlights.front();
+//     }
 
-    throw std::runtime_error("Couldn't find backlight in sysfs");
+//     if (filesystem.is_regular_file(sys_led_backlight/"brightness"))
+//         return sys_led_backlight;
+
+//     throw std::runtime_error("Couldn't find backlight in sysfs");
 }
 
 int determine_max_brightness(
