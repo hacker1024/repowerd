@@ -63,7 +63,7 @@ struct CompareBacklightPriority
     repowerd::Filesystem& filesystem;
 };
 
-repowerd::Path determine_sysfs_backlight_dir(repowerd::Filesystem& filesystem)
+repowerd::Path determine_sysfs_backlight_dir()
 {
     return repowerd::Path("/sys/class/backlight/panel0-backlight");
 
@@ -106,7 +106,7 @@ repowerd::SysfsBacklight::SysfsBacklight(
     std::shared_ptr<Log> const& log,
     std::shared_ptr<Filesystem> const& filesystem)
     : filesystem{filesystem},
-      sysfs_backlight_dir{determine_sysfs_backlight_dir(*filesystem)},
+      sysfs_backlight_dir{determine_sysfs_backlight_dir()},
       sysfs_brightness_file{sysfs_backlight_dir/"brightness"},
       max_brightness{determine_max_brightness(*filesystem, sysfs_backlight_dir)},
       last_set_brightness{-1.0}
